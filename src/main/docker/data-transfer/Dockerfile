@@ -6,7 +6,7 @@ FROM registry.cern.ch/docker.io/maven:3-eclipse-temurin-17 AS builder
 # Get source code
 WORKDIR /app
 
-RUN git clone --single-branch https://github.com/EGI-Federation/eosc-data-transfer.git . && \
+RUN git clone --single-branch https://github.com/joaopblopes/eosc-data-transfer.git . && \
     chmod a+x mvnw.sh
 
 # Build app
