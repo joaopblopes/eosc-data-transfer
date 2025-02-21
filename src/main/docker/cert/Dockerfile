@@ -1,4 +1,4 @@
-FROM nginx:1.23.0
+FROM registry.cern.ch/docker.io/nginx:1.23.0
 
 MAINTAINER Levente Farkas (levente.farkas@egi.eu)
 
