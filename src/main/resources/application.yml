@@ -44,7 +44,7 @@ eosc:
       fts:
         name: EGI Data Transfer
         class: egi.eu.EgiDataTransfer
-        url: https://fts3-public.cern.ch:8446
+        url: https://fts-egi.cern.ch:8446
         timeout: 3000
         trust-store-file: cern-truststore.jks
         trust-store-password: password
