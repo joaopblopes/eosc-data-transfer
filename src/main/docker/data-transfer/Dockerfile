@@ -1,7 +1,7 @@
 #
 # 1.--- Build Java app ---------------------------------------------------
 #
-FROM maven:3-eclipse-temurin-17 AS builder
+FROM registry.cern.ch/docker.io/maven:3-eclipse-temurin-17 AS builder
 
 # Get source code
 WORKDIR /app
