@@ -74,7 +74,7 @@ services:
   # ************************
   # Jaeger (traces)
   jaeger:
-    image: jaegertracing/all-in-one
+    image: registry.cern.ch/docker.io/jaegertracing/all-in-one
     container_name: jaeger
     command:
       - "--memory.max-traces"
@@ -97,7 +97,7 @@ services:
 
   # Loki (logs)
   loki:
-    image: grafana/loki:2.4.1
+    image: registry.cern.ch/docker.io/grafana/loki:2.4.1
     container_name: loki
     volumes:
       - ./loki/loki.yaml:/etc/loki/local-config.yaml
@@ -111,7 +111,7 @@ services:
 
   # Prometheus (metrics)
   prometheus:
-    image: quay.io/prometheus/prometheus:v2.34.0
+    image: registry.cern.ch/quay.io/prometheus/prometheus:v2.34.0
     container_name: prometheus
     command:
       - --web.console.templates=/etc/prometheus/consoles
@@ -133,7 +133,7 @@ services:
 
   # Grafana (dashboard)
   grafana:
-    image: grafana/grafana:9.1.0
+    image: registry.cern.ch/docker.io/grafana/grafana:9.1.0
     container_name: grafana
     deploy:
       resources:
@@ -147,7 +147,7 @@ services:
 
   # OpenTelemetry collector
   otelcol:
-    image: otel/opentelemetry-collector-contrib:latest
+    image: registry.cern.ch/docker.io/otel/opentelemetry-collector-contrib:latest
     container_name: otel-collector
     deploy:
       resources:
