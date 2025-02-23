@@ -17,7 +17,7 @@ services:
   # SSL terminator
   cert:
     container_name: data-transfer-ssl
-    image: eosc/data-transfer-ssl:latest
+    image: registry.cern.ch/eosc/data-transfer-ssl:latest
     environment:
       - SERVICE_DOMAIN=${SERVICE_DOMAIN}
       - SERVICE_EMAIL=${SERVICE_EMAIL}
@@ -46,7 +46,7 @@ services:
   # Data transfer service
   api:
     container_name: data-transfer-api
-    image: eosc/data-transfer-api:latest
+    image: registry.cern.ch/eosc/data-transfer-api:latest
     environment:
       - EOSC_TRANSFER_SERVICE_FTS_KEY_STORE_PASSWORD=${FTS_KEY_STORE_PASSWORD}
       - EOSC_TRANSFER_SERVICE_FTS_TRUST_STORE_PASSWORD=${FTS_TRUST_STORE_PASSWORD}
