@@ -2,20 +2,6 @@ FROM registry.cern.ch/docker.io/nginx:1.23.0
 
 MAINTAINER Levente Farkas (levente.farkas@egi.eu)
 
-# Build-time environment variables specified by docker-compose.yml / .env
-ARG SERVICE_EMAIL
-ARG SERVICE_DOMAIN
-ARG SERVICE
-ARG TELEMETRY_URL
-ARG GRAFANA_URL
-ARG CORS_ORIGINS
-ARG CORS_HEADERS
-ARG CORS_METHODS
-
-# Run-time environment variables
-ENV EMAIL ${SERVICE_EMAIL}
-ENV DOMAIN ${SERVICE_DOMAIN}
-
 # Install certbot and openssl
 # Using inotifywait to watch our certificates and trigger actions on change
 RUN apt-get -q -y update && \
@@ -27,11 +13,6 @@ RUN apt-get -q -y update && \
 COPY ssl/ /etc/ssl-options
 COPY nginx.conf /etc/nginx/nginx.conf
 COPY cert-nginx.conf /etc/nginx/conf.d/default.conf.template
-RUN envsubst '${DOMAIN}${SERVICE}${GRAFANA_URL}${CORS_ORIGINS}${CORS_METHODS}${CORS_HEADERS}' < /etc/nginx/conf.d/default.conf.template > /etc/nginx/conf.d/default.conf && \
-    rm -f /etc/nginx/conf.d/default.conf.template && \
-    rm -f /etc/nginx/sites-enabled/default && \
-    mkdir -p /var/cache/nginx/proxycache && \
-    mkdir -p /var/cache/nginx/proxytemp
 
 # Configure telemetry
 WORKDIR /opt
@@ -44,8 +25,6 @@ RUN ./install.sh
 
 WORKDIR /opt
 COPY telemetry.conf telemetry.conf
-RUN envsubst '${TELEMETRY_URL}' < /opt/telemetry.conf > /etc/nginx/conf.d/opentelemetry_module.conf && \
-    rm -f telemetry.conf
 
 ENV LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/opt/opentelemetry-webserver-sdk/sdk_lib/lib
 
