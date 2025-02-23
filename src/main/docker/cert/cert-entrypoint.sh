@@ -1,7 +1,24 @@
 #!/bin/sh
 
-export DOMAIN=${DOMAIN}
-export EMAIL=${EMAIL}
+export DOMAIN=${SERVICE_DOMAIN}
+export EMAIL=${SERVICE_EMAIL}
+export SERVICE=${SERVICE}
+export GRAFANA_URL=${GRAFANA_URL}
+export CORS_ORIGINS=${CORS_ORIGINS}
+export CORS_METHODS=${CORS_METHODS}
+export CORS_HEADERS=${CORS_HEADERS}
+
+
+# Substitute environment variables in the Nginx config
+RUN envsubst '${DOMAIN}${SERVICE}${GRAFANA_URL}${CORS_ORIGINS}${CORS_METHODS}${CORS_HEADERS}' < /etc/nginx/conf.d/default.conf.template > /etc/nginx/conf.d/default.conf && \
+    rm -f /etc/nginx/conf.d/default.conf.template && \
+    rm -f /etc/nginx/sites-enabled/default && \
+    mkdir -p /var/cache/nginx/proxycache && \
+    mkdir -p /var/cache/nginx/proxytemp
+
+# Substitute environment variables in the telemetry config
+RUN envsubst '${TELEMETRY_URL}' < /opt/telemetry.conf > /etc/nginx/conf.d/opentelemetry_module.conf && \
+    rm -f telemetry.conf
 
 # Ensure we have a folder for the certificates
 if [ ! -d /usr/share/nginx/certificates ]; then
