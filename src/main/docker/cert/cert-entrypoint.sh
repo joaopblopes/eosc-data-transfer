@@ -8,17 +8,42 @@ export CORS_ORIGINS=${CORS_ORIGINS}
 export CORS_METHODS=${CORS_METHODS}
 export CORS_HEADERS=${CORS_HEADERS}
 
+echo "Showing env variables.."
+echo ${DOMAIN}
+echo ${EMAIL}
+echo ${SERVICE}
+echo ${GRAFANA_URL}
+echo ${CORS_ORIGINS}
+echo ${CORS_METHODS}
+echo ${CORS_HEADERS}
+echo ${TELEMETRY_URL}
+
+ls /etc/nginx/conf.d/
+
+# Substitute environment variables in cert request script
+if [ -f /opt/request.sh.template ]; then
+  echo "Substitute environment variables in cert request.sh"
+  envsubst '${DOMAIN}${EMAIL}${LETSENCRYPT_DIR}' /opt/request.sh.template > /opt/request.conf && \
+      rm -f /opt/request.sh.template && \
+      chmod a+x /opt/request.sh
+fi
 
 # Substitute environment variables in the Nginx config
-envsubst '${DOMAIN}${SERVICE}${GRAFANA_URL}${CORS_ORIGINS}${CORS_METHODS}${CORS_HEADERS}' < /etc/nginx/conf.d/default.conf.template > /etc/nginx/conf.d/default.conf && \
-    rm -f /etc/nginx/conf.d/default.conf.template && \
-    rm -f /etc/nginx/sites-enabled/default && \
-    mkdir -p /var/cache/nginx/proxycache && \
-    mkdir -p /var/cache/nginx/proxytemp
+if [ -f /etc/nginx/conf.d/default.conf.template ; then
+  echo "Substitute environment variables in the Nginx config"
+  envsubst '${DOMAIN}${SERVICE}${GRAFANA_URL}${CORS_ORIGINS}${CORS_METHODS}${CORS_HEADERS}' < /etc/nginx/conf.d/default.conf.template > /etc/nginx/conf.d/default.conf && \
+      rm -f /etc/nginx/conf.d/default.conf.template && \
+      rm -f /etc/nginx/sites-enabled/default && \
+      mkdir -p /var/cache/nginx/proxycache && \
+      mkdir -p /var/cache/nginx/proxytemp
+fi
 
 # Substitute environment variables in the telemetry config
-envsubst '${TELEMETRY_URL}' < /opt/telemetry.conf > /etc/nginx/conf.d/opentelemetry_module.conf && \
-    rm -f telemetry.conf
+if [ -f /opt/telemetry.conf ; then
+  echo "Substitute environment variables in the telemetry config"
+  envsubst '${TELEMETRY_URL}' < /opt/telemetry.conf > /etc/nginx/conf.d/opentelemetry_module.conf && \
+      rm -f telemetry.conf
+fi
 
 # Ensure we have a folder for the certificates
 if [ ! -d /usr/share/nginx/certificates ]; then

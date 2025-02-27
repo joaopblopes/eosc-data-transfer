@@ -30,11 +30,10 @@ ENV LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/opt/opentelemetry-webserver-sdk/sdk_lib/li
 
 # Configure entrypoint
 COPY cert-entrypoint.sh entrypoint.sh
-COPY cert-request.sh request.sh
+COPY cert-request.sh request.sh.template
 COPY health-check.sh status.sh
 
 RUN chmod a+x entrypoint.sh && \
-    chmod a+x request.sh && \
     chmod a+x status.sh
 
 EXPOSE 80 443 8080
