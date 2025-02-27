@@ -23,13 +23,13 @@ ls /etc/nginx/conf.d/
 # Substitute environment variables in cert request script
 if [ -f /opt/request.sh.template ]; then
   echo "Substitute environment variables in cert request.sh"
-  envsubst '${DOMAIN}${EMAIL}${LETSENCRYPT_DIR}' /opt/request.sh.template > /opt/request.conf && \
+  envsubst '${DOMAIN}${EMAIL}${LETSENCRYPT_DIR}' < /opt/request.sh.template > /opt/request.sh && \
       rm -f /opt/request.sh.template && \
       chmod a+x /opt/request.sh
 fi
 
 # Substitute environment variables in the Nginx config
-if [ -f /etc/nginx/conf.d/default.conf.template ; then
+if [ -f /etc/nginx/conf.d/default.conf.template ] ; then
   echo "Substitute environment variables in the Nginx config"
   envsubst '${DOMAIN}${SERVICE}${GRAFANA_URL}${CORS_ORIGINS}${CORS_METHODS}${CORS_HEADERS}' < /etc/nginx/conf.d/default.conf.template > /etc/nginx/conf.d/default.conf && \
       rm -f /etc/nginx/conf.d/default.conf.template && \
