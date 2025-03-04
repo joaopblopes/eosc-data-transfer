@@ -44,9 +44,9 @@ eosc:
       fts:
         name: EGI Data Transfer
         class: egi.eu.EgiDataTransfer
-        url: https://fts3-public.cern.ch:8446
+        url: https://fts-egi-002.cern.ch:8446
         timeout: 3000
-        trust-store-file: cern-truststore.jks
+        trust-store-file: myTrustStore
         trust-store-password: password
         # Certificate in keystore only used to call FTS endpoint /config/cloud_storage,
         # all other calls to FTS are made with the Check-in token provided by the caller.
