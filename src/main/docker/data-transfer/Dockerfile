@@ -1,5 +1,20 @@
 #
-# 1.--- Build Java app ---------------------------------------------------
+# 1.--- Set up CERN CA ---------------------------------------------------
+#
+FROM gitlab-registry.cern.ch/linuxsupport/alma9-base:latest AS ca_store
+
+RUN yum -y install java-1.8.0-openjdk && \
+    keytool -import -alias cernbundle -file "/etc/pki/tls/certs/CERN-bundle.crt" \
+        -keystore /etc/pki/tls/certs/cern-truststore.jks -storepass 'password' -noprompt && \
+    keytool -import -alias cernGridCA -file "/etc/pki/tls/certs/CERN_Grid_Certification_Authority(1).crt" \
+        -keystore /etc/pki/tls/certs/cern-truststore.jks -storepass 'password' -noprompt && \
+    keytool -import -alias cernRootCA -file "/etc/pki/tls/certs/CERN_Root_CA.crt" \
+        -keystore /etc/pki/tls/certs/cern-truststore.jks -storepass 'password' -noprompt && \
+    keytool -import -alias cernRootCA2 -file "/etc/pki/tls/certs/CERN_Root_Certification_Authority_2.crt" \
+        -keystore /etc/pki/tls/certs/cern-truststore.jks -storepass 'password' -noprompt
+
+#
+# 2.--- Build Java app ---------------------------------------------------
 #
 FROM registry.cern.ch/docker.io/maven:3-eclipse-temurin-17 AS builder
 
@@ -9,12 +24,16 @@ WORKDIR /app
 RUN git clone --single-branch https://github.com/joaopblopes/eosc-data-transfer.git . && \
     chmod a+x mvnw.sh
 
+# Replace cern-truststore file
+COPY --from=ca_store /etc/pki/tls/certs/cern-truststore.jks /app/src/main/resources/
+
+RUN ls /app/src/main/resources/ -la
+
 # Build app
 RUN mvn package
 
-
 #
-# 2.--- Build container  --------------------------------------------------
+# 3.--- Build container  --------------------------------------------------
 #
 FROM registry.access.redhat.com/ubi8/openjdk-17:1.17
 
