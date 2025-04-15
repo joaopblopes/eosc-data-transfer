@@ -32,6 +32,7 @@ services:
       - api
       - grafana
     volumes:
+      - /home/eosc/certificates/:/usr/share/nginx/certificates/
       - certificates:/etc/letsencrypt
     healthcheck:
       test: ['CMD', '/opt/status.sh']
