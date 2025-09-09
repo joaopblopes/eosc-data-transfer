@@ -9,7 +9,9 @@ import jakarta.ws.rs.Priorities;
 import jakarta.ws.rs.core.MultivaluedMap;
 import jakarta.ws.rs.core.Response;
 import java.io.ByteArrayInputStream;
-
+import java.io.InputStream;
+import java.io.ByteArrayOutputStream;
+import java.nio.charset.StandardCharsets;
 
 /**
  * Custom exception mapper for FileTransferService API calls, allows access to response body in case of error
@@ -33,15 +35,17 @@ public final class FileTransferServiceExceptionMapper implements ResponseExcepti
     }
 
     private String getBody(Response response) {
-        String body = "";
-        if(response.hasEntity()) {
-            ByteArrayInputStream is = (ByteArrayInputStream)response.getEntity();
-            if(null == is)
-                is = (ByteArrayInputStream)((ResponseImpl)response).getEntityStream();
-            byte[] bytes = new byte[is.available()];
-            is.read(bytes, 0, is.available());
-            body = new String(bytes);
+        if (!response.hasEntity()) return "";
+
+        try (InputStream is = response.readEntity(InputStream.class);
+             ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
+
+            is.transferTo(baos);
+            byte[] bytes = baos.toByteArray();
+            return new String(bytes, StandardCharsets.UTF_8);
+
+        } catch (Exception e) {
+            return "";
         }
-        return body;
     }
 }
