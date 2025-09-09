@@ -47,23 +47,23 @@ public class TransferInfoExtended extends TransferInfo {
 
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     @Schema(description="True to overwrite destination files")
-    public Optional<Boolean> overwrite;
+    public Boolean overwrite;
 
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public Optional<Integer> priority;
+    public Integer priority;
 
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public Optional<Integer> retry;
+    public Integer retry;
 
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public Optional<Integer> retryDelay;
+    public Integer retryDelay;
 
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public Optional<Integer> maxTimeInQueue;
+    public Integer maxTimeInQueue;
 
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     @Schema(description="True if transfer was canceled")
-    public Optional<Boolean> cancel;
+    public Boolean cancel;
 
     @JsonInclude(JsonInclude.Include.NON_DEFAULT)
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ssZ")
@@ -122,17 +122,17 @@ public class TransferInfoExtended extends TransferInfo {
         this.destinationSS = jie.destination_se;
         this.verifyChecksum = null != jie.verify_checksum && jie.verify_checksum.equalsIgnoreCase("Y");
 
-        this.overwrite = Optional.of("Y".equals(jie.overwrite_flag.orElse(null)));
+        this.overwrite = "Y".equalsIgnoreCase(jie.overwrite_flag);
 
-        this.priority = jie.priority;
-        this.retry = jie.retry;
-        this.retryDelay = jie.retry_delay;
-        this.maxTimeInQueue = jie.max_time_in_queue;
-        this.cancel = jie.cancel_job;
+        this.priority = (jie.priority != null) ? jie.priority : 0;
+        this.retry = (jie.retry != null) ? jie. retry : 0;
+        this.retryDelay = (jie.retry_delay != null) ? jie.retry_delay : 0;
+        this.maxTimeInQueue = (jie.max_time_in_queue != null) ? jie.max_time_in_queue : 0;
+        this.cancel = (jie.cancel_job != null) ? jie.cancel_job : false;
 
         this.submittedAt = jie.submit_time;
         this.submittedTo = jie.submit_host;
-        this.finishedAt = jie.job_finished.orElse(null);
+        this.finishedAt = jie.job_finished;
         this.reason = jie.reason;
 
         this.voName = jie.vo_name;

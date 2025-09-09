@@ -6,8 +6,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
-
 
 /**
  * Details of a transfer job
@@ -40,25 +38,25 @@ public class JobInfoExtended extends JobInfo {
     public String verify_checksum; // "b" or "n"
 
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public Optional<String> overwrite_flag;
+    public String overwrite_flag;
 
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public Optional<Integer> priority;
+    public Integer priority;
 
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public Optional<Integer> retry;
+    public Integer retry;
 
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public Optional<Integer> retry_delay;
+    public Integer retry_delay;
 
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public Optional<Integer> max_time_in_queue;
+    public Integer max_time_in_queue;
 
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public Optional<Boolean> cancel_job;
+    public Boolean cancel_job;
 
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public Optional<Date> job_finished;
+    @JsonInclude(JsonInclude.Include.NON_DEFAULT)
+    public Date job_finished;
 
     @JsonInclude(JsonInclude.Include.NON_DEFAULT)
     public Date submit_time;
@@ -84,13 +82,6 @@ public class JobInfoExtended extends JobInfo {
      * Constructor
      */
     public JobInfoExtended() {
-        this.overwrite_flag = Optional.empty();
-        this.priority = Optional.empty();
-        this.retry = Optional.empty();
-        this.retry_delay = Optional.empty();
-        this.max_time_in_queue = Optional.empty();
-        this.cancel_job = Optional.empty();
-        this.job_finished = Optional.empty();
-        this.file_info = Optional.empty();
+
     }
 }
