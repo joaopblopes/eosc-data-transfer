@@ -122,9 +122,7 @@ public class TransferInfoExtended extends TransferInfo {
         this.destinationSS = jie.destination_se;
         this.verifyChecksum = null != jie.verify_checksum && jie.verify_checksum.equalsIgnoreCase("Y");
 
-        this.overwrite = jie.overwrite_flag.isPresent() && jie.overwrite_flag == Optional.of("Y") ?
-                                Optional.of(true) :
-                                Optional.of(false);
+        this.overwrite = "Y".equals(jie.overwrite_flag.orElse(null));
 
         this.priority = jie.priority;
         this.retry = jie.retry;
