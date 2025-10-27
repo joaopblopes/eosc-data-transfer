@@ -351,7 +351,7 @@ public class EgiDataTransfer implements TransferService {
                 // Got detailed status of each file, success
                 var jobInfo = jobInfoExt.get();
                 if(null != jobFileInfos)
-                    jobInfo.file_info = Optional.of(jobFileInfos);
+                    jobInfo.file_info = jobFileInfos;
 
                 return Uni.createFrom().item(new TransferInfoExtended(jobInfo, fileInfo));
             })

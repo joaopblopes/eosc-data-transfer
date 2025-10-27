@@ -76,7 +76,7 @@ public class JobInfoExtended extends JobInfo {
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public String cred_id;
 
-    public Optional<List<JobFileInfo>> file_info;
+    public List<JobFileInfo> file_info;
 
     /**
      * Constructor
