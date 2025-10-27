@@ -71,8 +71,8 @@ public class TransferPayloadInfo {
     public TransferPayloadInfo(JobFileInfo jfi) {
         this.fileState = FileState.fromString(jfi.file_state);
 
-        this.sourceSE = jfi.source_surl;
-        this.destinationSE = jfi.dest_surl;
+        this.source_se = jfi.source_surl;
+        this.destination_se = jfi.dest_surl;
 
         this.size = jfi.filesize;
         this.startedAt = jfi.start_time.orElse(null);
