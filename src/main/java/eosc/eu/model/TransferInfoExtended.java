@@ -152,8 +152,8 @@ public class TransferInfoExtended extends TransferInfo {
         this.user_dn = jie.user_dn;
         this.cred_id = jie.cred_id;
 
-        if(FileDetails.none != fileInfo && jie.file_info.isPresent()) {
-            List<JobFileInfo> jfl = jie.file_info.get();
+        if(FileDetails.none != fileInfo && jie.file_info != null && !jie.file_info.isEmpty()) {
+            List<JobFileInfo> jfl = jie.file_info;
             List<TransferPayloadInfo> tpl = new ArrayList<>();
             final boolean allFiles = FileDetails.all == fileInfo;
 
