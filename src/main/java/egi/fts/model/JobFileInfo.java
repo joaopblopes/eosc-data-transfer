@@ -24,10 +24,10 @@ public class JobFileInfo {
     public String source_surl;
 
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public String destination_se;
+    public String dest_se;
 
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public String destination_surl;
+    public String dest_surl;
 
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Optional<Long>  file_size;
