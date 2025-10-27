@@ -29,7 +29,7 @@ public class JobInfoExtended extends JobInfo {
     public String source_space_token;
 
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public String destination_se;
+    public String dest_se;
 
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public String space_token;
