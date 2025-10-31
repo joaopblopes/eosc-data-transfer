@@ -6,8 +6,6 @@ import org.eclipse.microprofile.openapi.annotations.media.Schema;
 
 import eosc.eu.model.TransferParameters;
 
-import java.util.Optional;
-
 
 /**
  * Parameters of a transfer job
@@ -26,6 +24,10 @@ public class JobParameters {
     @Schema(title="Transfer priority from 1 to 5, 1 being the lowest priority")
     @JsonInclude(JsonInclude.Include.NON_DEFAULT)
     public int priority = 0;
+
+    @Schema(title="S3 credentials (Base64-encoded access_key:secret_key)")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public String s3_credentials;
 
 
     /**

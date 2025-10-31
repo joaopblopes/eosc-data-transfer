@@ -420,33 +420,17 @@ public class EgiDataTransfer implements TransferService {
                 .after(Duration.ofMillis(this.timeout))
                 .failWith(new TransferServiceException("startTransferTimeout"))
             .chain(unused -> {
-                // If storage authentication is provided, configure every S3 destination
-                if(null != storageAuth && !storageAuth.isBlank()) {
-                    // Get a list of all S3 destination storage hostnames
-                    var destinations = transfer.allDestinationStorages(Transfer.Destination.s3.toString());
-                    var destinationsHttps = transfer.allDestinationStorages(Transfer.Destination.s3s.toString());
-                    if(null != destinations) {
-                        if(null != destinationsHttps)
-                            destinations.addAll(destinationsHttps);
-                    }
-                    else if(null != destinationsHttps)
-                        destinations = destinationsHttps;
-
-                    if(null == destinations)
-                        // Some destination URL is invalid, abort
-                        return Uni.createFrom().failure(new TransferServiceException("uriInvalid",
-                                                                 Tuple2.of("uri", (String)MDC.get("invalidUri"))));
-
-                    if(!destinations.isEmpty())
-                        // Configure FTS for all S3 destinations
-                        return prepareStorages(auth, storageAuth, destinations);
-                }
-
+                // Skip S3 destination preparation
                 return Uni.createFrom().item(true);
             })
             .chain(s3ConfigResult -> {
                 // Start new transfer
-                return fts.startTransferAsync(auth, new Job(transfer));
+                Job job = new Job(transfer);
+                // Add S3 credentials to params if provided
+                if(null != storageAuth && !storageAuth.isBlank()) {
+                    job.params.s3_credentials = storageAuth;
+                }
+                return fts.startTransferAsync(auth, job);
             })
             .chain(jobInfo -> {
                 // Transfer started
