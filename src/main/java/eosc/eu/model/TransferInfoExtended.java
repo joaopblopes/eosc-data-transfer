@@ -118,8 +118,8 @@ public class TransferInfoExtended extends TransferInfo {
         if(null != jie.job_metadata && !jie.job_metadata.isEmpty())
             this.jobMetadata.putAll(jie.job_metadata);
 
-        this.source_ss = jie.source_se;
-        this.destination_ss = jie.dest_se;
+        this.sourceSS = jie.source_se;
+        this.destinationSS = jie.dest_se;
         this.verifyChecksum = null != jie.verify_checksum && jie.verify_checksum.equalsIgnoreCase("Y");
 
         this.overwrite = "Y".equalsIgnoreCase(jie.overwrite_flag);
