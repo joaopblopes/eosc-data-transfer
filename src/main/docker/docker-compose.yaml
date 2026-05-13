@@ -1,6 +1,7 @@
 ---
 networks:
   default:
+    name: eosc
     driver: bridge
 
 volumes:
