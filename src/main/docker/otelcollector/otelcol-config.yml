@@ -1,15 +1,22 @@
 receivers:
   filelog:
-    start_at: beginning
+    start_at: end
     include:
       - /usr/logs/data-transfer*.json*
 
 exporters:
-  otlp_http:
+  otlphttp:
     endpoint: http://loki:3100/otlp
+    sending_queue:
+      enabled: true
+      num_consumers: 4
+      queue_size: 1000
 
 processors:
   batch:
+    send_batch_size: 1000
+    send_batch_max_size: 2000
+    timeout: 5s
   attributes:
     # Adding a Loki label based on OTLP attribute "log.file.name" happens in two steps:
     actions:
@@ -31,4 +38,4 @@ service:
     logs:
       receivers: [ filelog ]
       processors: [ attributes, batch ]
-      exporters: [ otlp_http ]
+      exporters: [ otlphttp ]
